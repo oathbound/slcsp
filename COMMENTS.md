@@ -23,7 +23,9 @@ Place the script file, slcsp.py, in the same directory as the required csv files
 # Running the Script
 At the CLI run:
 
-```#> python slcsp.py ```
+```#> python3 slcsp.py ```
+
+The script may also be executed from the CLI, if given execution and if the system's env is correctly configured for python3.  
 
 # Output
 The slcsp.csv file will be printed to STDOUT along with the SLCSP for the zipcode, if one 
@@ -31,7 +33,7 @@ can be determined from the available data.  If no single rate area can be determ
 slcsp can be determined for the rate area a blank value will output.  The order of the 
 zipcodes will be unchanged.  
 
-If a rate can be found:  
+If an SLCSP rate can be found:  
 12018,204.60
 
 If no rate can be determined the rate field will be left blank:  
