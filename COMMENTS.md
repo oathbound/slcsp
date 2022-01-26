@@ -1,5 +1,3 @@
-slcsp.py  comments file:
-
 # Introduction
 This script will output a csv format to STDOUT containing requested zip codes (from slcsp.csv) and their 
 SLCSP rate (unless that cannot be determined or does not exist).
