@@ -1,6 +1,6 @@
-#python39
+#!/usr/bin/env python3
 
-# Alexander Mouravieff-Apostol for TTS Engineering
+# for TTS Engineering
 
 #process:
 # load silver plans per "[state] [rate area #]", storing the 2 lowest plans only.  close the file.
@@ -31,12 +31,13 @@ class RateAreaReader():
             header = next(csvFile) #skip headers
             for line in csvFile: 
                 # line is dict with keys ['plan_id','state','metal_level','rate,rate_area']
+                # We are only examining "Silver" type files.  
                 if line['metal_level'].lower() == 'silver': 
                     rc = "{} {}".format(line['state'],line['rate_area'])
-                    rate = float(line['rate'])
-                    #If this rc is new - we need to set things up
-                    if rc not in sls.keys():
-                        sls[rc]=[float(line['rate']), ""]
+                    rate = float(line['rate'])  #Future dev: add Robustness with try/except for non-numeric values - beyond scope of current project
+
+                    if rc not in sls.keys():  #If this rc is new - we need to set things up
+                        sls[rc]=[rate, ""]
                     elif rate <= sls[rc][0]: 
                         if rate==sls[rc][0]: #ignore duplicate prices!
                             continue
@@ -57,8 +58,8 @@ class RateAreaReader():
 
     def getSLCSP(self, ra):
         if ra in self.slsRates.keys():
-            return self.slsRates[ra]
-        return ""
+            return self.slsRates[ra] #we have already consolidated the slc values to the rate area.
+        return "" #no matching ratearea is defined.
 
 
 class ZipRateAreasReader():
@@ -82,8 +83,8 @@ class ZipRateAreasReader():
                 if zip in zips.keys():
                     #we have already seen this zip.
                     if rc != zips[zip]: #a different state+rate area pair.  We are to offer no rate on this.
-                        zips[zip]="" #there is no rate area to look up.
-                    #if rate area is the same, then it's ok despite being in the list twice / different county info.
+                        zips[zip]=""
+                    #if rate area is the same, then it's a no-op - only county level data is different and that data is not relevant to this
                 else: #not in the keys means a new zipcode, so no need to check for preexisting rates
                     zips[zip]=rc
         
